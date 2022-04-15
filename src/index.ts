@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import { AuthRoute } from './Routers';
 
 const app: Application = express();
-const port: any = process.env.PORT | 4000;
+const port = process.env.port || 4000;
 
 mongoose.connect('mongodb://localhost:27017/jwt', {
 }).then(() => {
@@ -27,8 +27,9 @@ const options: cors.CorsOptions = {
 app.use(cors(options))
 app.use(cookieParser());
 app.use(express.json());
-app.listen(4000, () => {
+app.listen(port, () => {
     console.clear();
     console.log('server start on port ', port);
 })
+app.get('/', (req, res) => { res.send('Hello World')});
 app.use('/auth', AuthRoute);
