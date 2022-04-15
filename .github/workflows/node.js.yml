@@ -36,7 +36,5 @@ jobs:
         run: heroku git:remote --app $HEROKU_APP_NAME
         env:
           HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
-      - name: change to production branch
-        run: heroku git:checkout production
       - name: Push to Heroku
-        run: git push heroku production:master
+        run: git push heroku master
