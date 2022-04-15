@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import { AuthRoute } from './Routers';
 
 const app: Application = express();
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 
 mongoose.connect('mongodb://localhost:27017/jwt', {
 }).then(() => {
@@ -16,10 +16,11 @@ mongoose.connect('mongodb://localhost:27017/jwt', {
     console.log(err.message)
 })
 
-const allowedOrigins = ['http://localhost:4000'];
+const allowedOrigins = ['*'];
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 };
 
