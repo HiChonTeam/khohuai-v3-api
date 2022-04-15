@@ -3,6 +3,7 @@ import mongoose, { Schema, Document, SchemaOptions } from "mongoose";
 interface UserDocument extends Document {
     email: string;
     password: string;
+    salt: string;
     firstname: string;
     lastname: string;
 }
@@ -29,7 +30,8 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, "Password is required"]
-    }
+    },
+    salt: { type: String, required: true },
 }, options);
 
 const User = mongoose.model<UserDocument>('user', userSchema);

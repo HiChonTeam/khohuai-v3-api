@@ -1,39 +1,74 @@
-import UserModel from "../Models/UserModel";
-// import jwt from 'jsonwebtoken';
+import User from "../Models/User";
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 
-const maxAge = 3 * 24 * 60 * 60;
 
-// const createToken = (id: String) => { 
-//     return jwt.sign(
-//         { id },
-//         'chon',
-//         { expiresIn: maxAge }
-//     )
-// }
+const GenrateSalt = async () => {
+    return await bcrypt.genSalt();
+}
 
-export const Register = async (req:Request , res:Response) => { 
+const GeneratePassword = async (password: string, salt: string) => {
+    return await bcrypt.hash(password, salt);
+}
+
+const ValidatePassword = async (enterPassword: string, savedPassword: string, salt: string) => { 
+
+    return await GeneratePassword(enterPassword,salt) === savedPassword;
+}
+
+
+export const Register = async (req: Request, res: Response) => {
 
     const { email, password } = req.body;
 
-    res.json({ email, password })
+    const exist = await User.findOne({ email });
+
+    if (exist) {
+        return res.json({ message: 'Email has already exist' })
+    }
+
+    const salt = await GenrateSalt();
+    const userPassword = await GeneratePassword(password, salt);
+    const user = await User.create({ email, password: userPassword, salt });
+
+
+    res.status(201).json({ user, created: true })
 }
 
-// module.exports.login = async (req, res) => { 
-//     try {
-//         const { email, password } = req.body;
-//         const user = await UserModel.create({ email, password });
-//         const token = createToken(user._id);
+export const Login = async (req: Request, res: Response) => {
+    try {
 
-//         res.cookie('jwt', token, { 
-//             withCredential: true,
-//             httpOnly: false,
-//             maxAge: maxAge * 1000
-//         })
+        const { email, password, remember } = req.body;
+        const user = await User.findOne({ email });
 
-//         res.status(201).json({ user: user._id, created: true })
 
-//     } catch (error) {
+        if (user) {
+
+            const validation = await ValidatePassword(password, user.password, user.salt);
+
+            if (validation) {
+                req.session = { user }
+                return res.status(201).json({ loggedIn: true, user });
+            }
+            else { 
+                return res.json({message: 'Password is not correct'})
+            }
+            
+        }
+        else { 
+            return res.json({message: 'Email not found'})
+        }
         
-//     }
-// }
+    } catch (error) {
+
+    }
+}
+
+export const Logout = (req: Request, res: Response) => {
+    req.session = null;
+    return res.json({ message: 'Logout success' })
+}
+
+export const LoggedIn = (req: Request, res: Response) => {
+    res.json(req.session);
+}

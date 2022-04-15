@@ -2,14 +2,14 @@ import express, { Application } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-
+import cookieSession from 'cookie-session';
 // routes
 import { AuthRoute } from './Routers';
 
 const app: Application = express();
 const port = process.env.PORT || 4000;
 
-mongoose.connect('mongodb://localhost:27017/jwt', {
+mongoose.connect('mongodb+srv://chon:1234@cluster0.ycbuv.mongodb.net/khohuai-v3?retryWrites=true&w=majority', {
 }).then(() => {
     console.log('Connnect MongoDB Successfully');
 }).catch((err: any) => {
@@ -19,18 +19,24 @@ mongoose.connect('mongodb://localhost:27017/jwt', {
 const allowedOrigins = ['*'];
 
 const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 };
 
 
 app.use(cors(options))
 app.use(cookieParser());
+
+const sessionConfig: any = {
+	name: "session",
+    keys: ['khohuai']
+};
+app.use(cookieSession(sessionConfig))
 app.use(express.json());
 app.listen(port, () => {
     console.clear();
     console.log('server start on port ', port);
 })
-app.get('/', (req, res) => { res.send('Hello World')});
+app.get('/', (req, res) => { res.send('Hello World') });
 app.use('/auth', AuthRoute);
