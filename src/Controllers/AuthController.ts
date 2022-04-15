@@ -70,5 +70,10 @@ export const Logout = (req: Request, res: Response) => {
 }
 
 export const LoggedIn = (req: Request, res: Response) => {
-    res.json(req.session);
+    if (req.session) {
+        res.json(req.session);
+    }
+    else { 
+        res.json({message: 'Session Timeout'})
+    }
 }
