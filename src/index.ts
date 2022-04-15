@@ -22,11 +22,13 @@ const options: cors.CorsOptions = {
   credentials: true
 };
 
+
 app.use(cors(options))
 app.use(cookieParser());
 app.use(express.json());
 app.listen(port, () => {
     console.clear();
-    console.log('server start on port 4000');
+    console.log('server start on port ', port);
 })
+app.get('/', (req, res) => { res.send('Hello World')});
 app.use('/auth', AuthRoute);
