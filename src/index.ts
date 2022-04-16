@@ -39,13 +39,13 @@ declare module 'express-session' {
 const sessionOptions: expressSession.SessionOptions = {
     name: 'session',
     secret: "khohuai",
-    saveUninitialized: false,
-    resave: false,
-    cookie: { 
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: false
-    }
+    saveUninitialized: true,
+    resave: true,
+    // cookie: { 
+    //     httpOnly: true,
+    //     sameSite: 'lax',
+    //     secure: true
+    // }
 }
 
 app.use(expressSession(sessionOptions))
