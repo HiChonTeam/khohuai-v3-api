@@ -32,6 +32,6 @@ export const getLottery = async (req: Request, res: Response) => {
         res.json(data);
 
     } catch (error) {
-
-    }
+        console.log(error);
+    }   
 }
