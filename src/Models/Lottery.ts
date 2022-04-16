@@ -15,7 +15,7 @@ interface LotteryDocument extends Document {
     // lotteries: LotteryItem[]
    
     number: string;
-    qty: string;
+    qty: number;
     rating: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     status: 'Available' | 'Empty' | 'SoldOut' | 'OutOfDate';
     desc: string;
