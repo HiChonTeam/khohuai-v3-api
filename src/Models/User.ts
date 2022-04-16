@@ -11,6 +11,7 @@ interface UserDocument extends Document {
 const options: SchemaOptions = {
     toJSON: {
         transform(doc, ret) {
+            delete ret._id,
             delete ret.password;
             delete ret.salt;
             delete ret.__v;
