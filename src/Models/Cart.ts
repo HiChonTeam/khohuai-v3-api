@@ -2,14 +2,15 @@ import mongoose, { Schema, Document, SchemaOptions } from "mongoose";
 
 interface CartItem {
     number: string,
-    qty: string,
+    qty: number,
     qty_now: string;
     status: 'Available' | 'Empty' | 'SoldOut' | 'OutOfDate',
 }
 
 interface CartDocument extends Document {
     uid: string;
-    mycart: CartItem[]
+    total: number;
+    all_items: CartItem[]
 }
 
 const options: SchemaOptions = {
@@ -26,10 +27,13 @@ const options: SchemaOptions = {
 }
 
 const cartSchema = new Schema({
-    id: {
+    uid: {
         type: String
     },
-    mycart: {
+    total: { 
+        type: Number
+    },
+    all_items: {
         type: Array
     }
 }, options);
