@@ -19,29 +19,15 @@ mongoose.connect("mongodb+srv://chon:1234@cluster0.ycbuv.mongodb.net/khohuai-v3?
     console.log(err.message)
 })
 
-const allowedOrigins = ['*'];
+const allowedOrigins = ['http://localhost:3000', 'https://khohuai-v3.web.app'];
 
 const options: cors.CorsOptions = {
     origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    credentials: true,
 };
 app.use(cors(options))
-// app.use(cookieParser());
 
-// const sessionConfig = {
-// 	name: "session",
-//     keys: ['khohuai']
-// };
-// app.use(cookieSession(sessionConfig))
-
-class User {
-    id?: string = ''
-    email?: string = '';
-}
-class Cart {
-    qty?: number = 0;
-}
 declare module 'express-session' {
     interface SessionData {
         uid: string | null
@@ -53,8 +39,13 @@ declare module 'express-session' {
 const sessionOptions: expressSession.SessionOptions = {
     name: 'session',
     secret: "khohuai",
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
+    cookie: { 
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: false
+    }
 }
 
 app.use(expressSession(sessionOptions))

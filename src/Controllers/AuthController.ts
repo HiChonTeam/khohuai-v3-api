@@ -47,7 +47,7 @@ export const Login = async (req: Request, res: Response) => {
 
             if (validation) {
                 req.session.uid = user.id;
-                return res.status(201).json({ loggedIn: true, user });
+                return res.status(201).json({ loggedIn: true, message: 'Login Success', user });
             }
             else {
                 return res.json({ message: 'Password is not correct' })
