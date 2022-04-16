@@ -14,6 +14,8 @@ export const UpdateCart = async (req: Request, res: Response) => {
 
         if (existingLottery) {
 
+            const img_lottery = existingLottery.img;
+
             if (existingMyCart) {
 
                     const found = existingMyCart.all_items.find((item: any) => item.number == number);
@@ -21,11 +23,12 @@ export const UpdateCart = async (req: Request, res: Response) => {
                     if (!found) {
 
                         if (request_qty === 1) {
-                            //create first item in cart
+                            //Add new item to cart
                             existingMyCart.all_items.push({
                                 number: number,
                                 qty: 1,
                                 status: 'Available',
+                                img: img_lottery
                             })
                             existingMyCart.save();
                             return res.json({ meaages: 'Add new item seccess', data: existingMyCart.all_items });
@@ -98,6 +101,7 @@ export const UpdateCart = async (req: Request, res: Response) => {
                             number: number,
                             qty: 1,
                             status: 'Available',
+                            img: img_lottery
                         }
                     ]
                 })
