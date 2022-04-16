@@ -67,4 +67,5 @@ app.listen(port, () => {
 app.get('/', (req, res) => { res.send('Hello World') });
 app.use('/auth', Routes.AuthRoute);
 app.use('/user', Routes.UserRoute);
+app.use('/cart', Routes.CartRoutes);
 app.use('/lottery', Routes.LotteryRoute);
