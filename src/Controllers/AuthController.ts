@@ -29,7 +29,7 @@ export const Register = async (req: Request, res: Response) => {
 
     const salt = await GenrateSalt();
     const userPassword = await GeneratePassword(password, salt);
-    const user = await User.create({ email, password: userPassword, salt });
+    const user = await User.create({ email, password: userPassword, salt, role: 'member' });
 
     req.session.uid = user.id;
     res.status(201).json({ user, created: true })
@@ -45,11 +45,13 @@ export const Login = async (req: Request, res: Response) => {
 
             const validation = await ValidatePassword(password, user.password, user.salt);
 
+            const role = user.role;
+
             if (validation) {
                 req.session.uid = user.id;
                 req.session.loggedIn = true;
                 req.session.role = 'member';
-                return res.status(201).json({ loggedIn: true, message: 'Login Success', user });
+                return res.status(201).json({ loggedIn: true, role , message: 'Login Success', user });
             }
             else {
                 return res.json({ message: 'Password is not correct' })
