@@ -42,7 +42,7 @@ const sessionOptions: expressSession.SessionOptions = {
     saveUninitialized: true,
     resave: true,
     cookie: { 
-        httpOnly: true,
+        // httpOnly: true,
         sameSite: 'none',
         secure: true
     }
