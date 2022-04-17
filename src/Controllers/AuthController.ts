@@ -68,19 +68,18 @@ export const Login = async (req: Request, res: Response) => {
 export const Logout = (req: Request, res: Response) => {
     req.session.destroy(() => {
         console.log(req.session)
-        res.json({ message: 'Logout success' })
-        // res.redirect('/')
+        res.json({ message: 'Logout success', loggedIn: false, role: '' })
     })
 }
 
 export const LoggedIn = (req: Request, res: Response) => {
 
-    console.log(req.session);
+    const { loggedIn, role } = req.session;
 
-    if (req.session) {
-        res.json({ loggedIn: req.session.loggedIn, role: req.session.role });
+    if (loggedIn && role) {
+        res.json({ loggedIn: loggedIn, role: role });
     }
     else {
-        res.json({ message: 'Session Timeout' })
+        res.json({ loggedIn: false, role: '' });
     }
 }
