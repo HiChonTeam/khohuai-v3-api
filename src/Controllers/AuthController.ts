@@ -68,14 +68,17 @@ export const Login = async (req: Request, res: Response) => {
 export const Logout = (req: Request, res: Response) => {
     req.session.destroy(() => {
         console.log(req.session)
-        res.redirect('/')
+        res.json({ message: 'Logout success' })
+        // res.redirect('/')
     })
 }
 
 export const LoggedIn = (req: Request, res: Response) => {
+
     console.log(req.session);
+
     if (req.session) {
-        res.json(req.session.loggedIn);
+        res.json({ loggedIn: req.session.loggedIn, role: req.session.role });
     }
     else {
         res.json({ message: 'Session Timeout' })
