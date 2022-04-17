@@ -39,23 +39,28 @@ declare module 'express-session' {
 const sessionOptions: expressSession.SessionOptions = {
     name: 'session',
     secret: "khohuai",
-    saveUninitialized: true,
-    resave: true,
+    saveUninitialized: false,
+    resave: false,
     cookie: { 
+        maxAge: 1000 * 60 * 60,
         // httpOnly: true,
-        sameSite: 'none',
+        sameSite: 'none', 
         secure: true
     }
 }
-
+app.use(express.json());
+app.set('trust proxy', 1);
 app.use(expressSession(sessionOptions))
 
-app.use(express.json());
+
 app.listen(port, () => {
     console.clear();
     console.log('server start on port ', port);
 })
-app.get('/', (req, res) => { res.cookie('cookie', 'hello world').send('Hello World') });
+app.get('/', (req, res) => { 
+    req.session.test = '1234'
+    res.send('Hello World') 
+});
 app.use('/auth', Routes.AuthRoute);
 app.use('/user', Routes.UserRoute);
 app.use('/cart', Routes.CartRoutes);
