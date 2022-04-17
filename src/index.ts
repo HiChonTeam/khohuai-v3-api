@@ -30,7 +30,9 @@ app.use(cors(options))
 
 declare module 'express-session' {
     interface SessionData {
-        uid: string | null
+        uid: string | null;
+        role: string | null;
+        loggedIn: boolean | null;
         [key: string]: any;
     }
 }
@@ -42,7 +44,7 @@ const sessionOptions: expressSession.SessionOptions = {
     saveUninitialized: false,
     resave: false,
     cookie: { 
-        maxAge: 1000 * 60 * 60,
+        // maxAge: 1000 * 60 * 60,
         // httpOnly: true,
         sameSite: 'none', 
         secure: true

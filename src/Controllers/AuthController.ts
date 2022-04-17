@@ -47,6 +47,8 @@ export const Login = async (req: Request, res: Response) => {
 
             if (validation) {
                 req.session.uid = user.id;
+                req.session.loggedIn = true;
+                req.session.role = 'member';
                 return res.status(201).json({ loggedIn: true, message: 'Login Success', user });
             }
             else {
@@ -73,7 +75,7 @@ export const Logout = (req: Request, res: Response) => {
 export const LoggedIn = (req: Request, res: Response) => {
     console.log(req.session);
     if (req.session) {
-        res.json(req.session);
+        res.json(req.session.loggedIn);
     }
     else {
         res.json({ message: 'Session Timeout' })
