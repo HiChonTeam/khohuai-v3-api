@@ -55,7 +55,7 @@ app.listen(port, () => {
     console.clear();
     console.log('server start on port ', port);
 })
-app.get('/', (req, res) => { res.send('Hello World') });
+app.get('/', (req, res) => { res.cookie('s', 'test').send('Hello World') });
 app.use('/auth', Routes.AuthRoute);
 app.use('/user', Routes.UserRoute);
 app.use('/cart', Routes.CartRoutes);
