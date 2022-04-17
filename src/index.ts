@@ -41,11 +41,11 @@ const sessionOptions: expressSession.SessionOptions = {
     secret: "khohuai",
     saveUninitialized: true,
     resave: true,
-    // cookie: { 
-    //     httpOnly: true,
-    //     sameSite: 'lax',
-    //     secure: true
-    // }
+    cookie: { 
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: true
+    }
 }
 
 app.use(expressSession(sessionOptions))
