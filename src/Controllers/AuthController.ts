@@ -58,7 +58,7 @@ export const Login = async (req: Request, res: Response) => {
                 req.session.loggedIn = true;
                 req.session.role = 'member';
                 const displayName = user.displayName;
-                return res.status(201).json({ loggedIn: true, role , message: 'Login Success', displayName });
+                return res.status(201).json({ loggedIn: true, role , message: 'Login Success', user: { displayName } });
             }
             else {
                 return res.json({ message: 'Password is not correct' })
