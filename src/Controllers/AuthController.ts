@@ -48,7 +48,7 @@ export const Register = async (req: Request, res: Response) => {
 export const Login = async (req: Request, res: Response) => {
     try {
 
-        const { email, password, remember } = req.body;
+        const { email, password } = req.body;
         const user = await User.findOne({ email });
 
         if (user) {
@@ -56,14 +56,13 @@ export const Login = async (req: Request, res: Response) => {
             const validation = await ValidatePassword(password, user.password, user.salt);
 
             if (validation) {
+
                 req.session.uid = user.id;
                 req.session.loggedIn = true;
                 req.session.user = { 
                     role: user.role,
                     displayName: user.displayName
                 }
-
-                console.log('login ', req.session);
                 
                 return res.status(201).json({ loggedIn: true, message: 'Login Success', user: req.session.user });
             }
