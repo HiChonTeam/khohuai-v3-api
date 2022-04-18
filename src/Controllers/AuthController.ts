@@ -29,12 +29,16 @@ export const Register = async (req: Request, res: Response) => {
 
     const salt = await GenrateSalt();
     const userPassword = await GeneratePassword(password, salt);
-    const user = await User.create({ email, password: userPassword, salt, role: 'member' });
+
+    const role = 'member';
+    const displayName = email.split('@')[0]
+
+    const user = await User.create({ email, password: userPassword, salt, role, displayName });
 
     req.session.uid = user.id;
     req.session.loggedIn = true;
     req.session.role = 'member';
-    return res.status(201).json({ loggedIn: true, role: 'member' , message: 'Resgister success' });
+    return res.status(201).json({ loggedIn: true, role, message: 'Resgister success', user: { displayName } });
 }
 
 export const Login = async (req: Request, res: Response) => {
@@ -53,7 +57,8 @@ export const Login = async (req: Request, res: Response) => {
                 req.session.uid = user.id;
                 req.session.loggedIn = true;
                 req.session.role = 'member';
-                return res.status(201).json({ loggedIn: true, role , message: 'Login Success' });
+                const displayName = user.displayName;
+                return res.status(201).json({ loggedIn: true, role , message: 'Login Success', user: { displayName } });
             }
             else {
                 return res.json({ message: 'Password is not correct' })
