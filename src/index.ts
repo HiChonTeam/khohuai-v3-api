@@ -32,7 +32,7 @@ declare module 'express-session' {
     interface SessionData {
         uid: string | null;
         loggedIn: boolean | null;
-        user: { 
+        user?: { 
             role: string | null;
             displayName: string | null;
         };
@@ -44,13 +44,13 @@ declare module 'express-session' {
 const sessionOptions: expressSession.SessionOptions = {
     name: 'session',
     secret: "khohuai",
-    saveUninitialized: true,
-    resave: true,
-    // cookie: { 
-    //     httpOnly: true,
-    //     sameSite: 'lax', 
-    //     secure: true
-    // }
+    saveUninitialized: false,
+    resave: false,
+    cookie: { 
+        httpOnly: false,
+        sameSite: 'none', 
+        secure: false
+    }
 }
 app.use(express.json());
 app.set('trust proxy', 1);

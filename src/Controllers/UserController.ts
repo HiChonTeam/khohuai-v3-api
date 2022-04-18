@@ -7,8 +7,6 @@ export const getProfile = async (req: Request, res: Response) => {
 
     try {
         const data = await User.findById(uid);
-
-        console.log(data);
         res.json(data);
         
     } catch (error) {
