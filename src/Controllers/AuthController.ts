@@ -58,10 +58,10 @@ export const Login = async (req: Request, res: Response) => {
             if (validation) {
                 req.session.uid = user.id;
                 req.session.loggedIn = true;
-                // req.session.user = { 
-                //     role: user.role,
-                //     displayName: user.displayName
-                // }
+                req.session.user = { 
+                    role: user.role,
+                    displayName: user.displayName
+                }
 
                 console.log('login ', req.session);
                 
