@@ -32,7 +32,7 @@ declare module 'express-session' {
     interface SessionData {
         uid: string | null;
         loggedIn: boolean | null;
-        user?: { 
+        user: { 
             role: string | null;
             displayName: string | null;
         };
@@ -46,14 +46,14 @@ const sessionOptions: expressSession.SessionOptions = {
     secret: "khohuai",
     saveUninitialized: false,
     resave: false,
-    cookie: { 
-        httpOnly: false,
-        sameSite: 'none', 
-        secure: false
-    }
+    // cookie: { 
+    //     httpOnly: true,
+    //     sameSite: 'none', 
+    //     secure: true
+    // }
 }
 app.use(express.json());
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 app.use(expressSession(sessionOptions))
 
 
@@ -62,7 +62,6 @@ app.listen(port, () => {
     console.log('server start on port ', port);
 })
 app.get('/', (req, res) => { 
-    req.session.test = '1234'
     res.send('Hello World') 
 });
 app.use('/auth', Routes.AuthRoute);
