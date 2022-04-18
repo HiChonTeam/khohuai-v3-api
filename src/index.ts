@@ -31,8 +31,11 @@ app.use(cors(options))
 declare module 'express-session' {
     interface SessionData {
         uid: string | null;
-        role: string | null;
         loggedIn: boolean | null;
+        user: { 
+            role: string | null;
+            displayName: string | null;
+        };
         [key: string]: any;
     }
 }
@@ -41,14 +44,13 @@ declare module 'express-session' {
 const sessionOptions: expressSession.SessionOptions = {
     name: 'session',
     secret: "khohuai",
-    saveUninitialized: false,
-    resave: false,
-    cookie: { 
-        // maxAge: 1000 * 60 * 60,
-        // httpOnly: true,
-        sameSite: 'none', 
-        secure: true
-    }
+    saveUninitialized: true,
+    resave: true,
+    // cookie: { 
+    //     httpOnly: true,
+    //     sameSite: 'lax', 
+    //     secure: true
+    // }
 }
 app.use(express.json());
 app.set('trust proxy', 1);
