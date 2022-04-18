@@ -88,9 +88,10 @@ export const Logout = (req: Request, res: Response) => {
 
 export const LoggedIn = (req: Request, res: Response) => {
 
-    const { loggedIn, role } = req.session;
+    const { loggedIn } = req.session;
+    const { user } = req.session.user;
 
-    if (loggedIn && role) {
+    if (loggedIn && user) {
         res.json({ loggedIn: loggedIn, user: req.session.user });
     }
     else {
