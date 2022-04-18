@@ -7,6 +7,7 @@ interface UserDocument extends Document {
     firstname: string;
     lastname: string;
     role: string;
+    displayName: string;
 }
 
 const options: SchemaOptions = {
@@ -34,7 +35,8 @@ const userSchema = new Schema({
         required: [true, "Password is required"]
     },
     salt: { type: String, required: true },
-    role: { type: String }
+    role: { type: String },
+    displayName: { type: String}
 }, options);
 
 const User = mongoose.model<UserDocument>('user', userSchema);
