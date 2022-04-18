@@ -24,7 +24,7 @@ export const Register = async (req: Request, res: Response) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-        return res.json({ message: 'Email has already exist' })
+        return res.status(400).json({ message: 'Email has already exist' })
     }
 
     const salt = await GenrateSalt();
@@ -67,12 +67,12 @@ export const Login = async (req: Request, res: Response) => {
                 return res.status(201).json({ loggedIn: true, message: 'Login Success', user: req.session.user });
             }
             else {
-                return res.json({ message: 'Password is not correct' })
+                return res.status(400).json({ message: 'Password is not correct' })
             }
 
         }
         else {
-            return res.json({ message: 'Email not found' })
+            return res.status(400).json({ message: 'Email not found' })
         }
 
     } catch (error) {
