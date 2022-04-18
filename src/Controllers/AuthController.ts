@@ -37,8 +37,12 @@ export const Register = async (req: Request, res: Response) => {
 
     req.session.uid = user.id;
     req.session.loggedIn = true;
-    req.session.role = 'member';
-    return res.status(201).json({ loggedIn: true, role, message: 'Resgister success', user: { displayName } });
+    req.session.user = { 
+        role: user.role,
+        displayName: user.displayName
+    }
+
+    return res.status(201).json({ loggedIn: true, role, message: 'Resgister success', user: req.session.user });
 }
 
 export const Login = async (req: Request, res: Response) => {
@@ -51,14 +55,15 @@ export const Login = async (req: Request, res: Response) => {
 
             const validation = await ValidatePassword(password, user.password, user.salt);
 
-            const role = user.role;
-
             if (validation) {
                 req.session.uid = user.id;
                 req.session.loggedIn = true;
-                req.session.role = 'member';
-                const displayName = user.displayName;
-                return res.status(201).json({ loggedIn: true, role , message: 'Login Success', user: { displayName } });
+                req.session.user = { 
+                    role: user.role,
+                    displayName: user.displayName
+                }
+                
+                return res.status(201).json({ loggedIn: true, message: 'Login Success', user: req.session.user });
             }
             else {
                 return res.json({ message: 'Password is not correct' })
@@ -77,7 +82,7 @@ export const Login = async (req: Request, res: Response) => {
 export const Logout = (req: Request, res: Response) => {
     req.session.destroy(() => {
         console.log(req.session)
-        res.json({ message: 'Logout success', loggedIn: false, role: '' })
+        res.json({ message: 'Logout success', loggedIn: false })
     })
 }
 
@@ -86,9 +91,9 @@ export const LoggedIn = (req: Request, res: Response) => {
     const { loggedIn, role } = req.session;
 
     if (loggedIn && role) {
-        res.json({ loggedIn: loggedIn, role: role });
+        res.json({ loggedIn: loggedIn, user: req.session.user });
     }
     else {
-        res.json({ loggedIn: false, role: '' });
+        res.json({ loggedIn: false });
     }
 }
