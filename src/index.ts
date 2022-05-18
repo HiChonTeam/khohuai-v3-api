@@ -46,11 +46,11 @@ const sessionOptions: expressSession.SessionOptions = {
     secret: "khohuai",
     saveUninitialized: false,
     resave: false,
-    // cookie: { 
-    //     httpOnly: true,
-    //     sameSite: 'none', 
-    //     secure: 'auto'
-    // }
+    cookie: { 
+        secure: false,
+        sameSite: 'lax', 
+        maxAge: 1000 * 60 * 60
+    }
 }
 app.use(express.json());
 // app.set('trust proxy', 1);
